@@ -118,6 +118,16 @@
             font-size: 16px;
         }
         
+        .time-estimate {
+            background: #e8f5e9;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #2e7d32;
+            font-weight: 600;
+            border-left: 4px solid #4CAF50;
+        }
+        
         .touch-buttons {
             display: flex;
             justify-content: center;
@@ -449,9 +459,13 @@
                 <strong>📱 Device Detected:</strong> <span id="deviceType">Desktop</span>
             </div>
             
+            <div class="time-estimate">
+                ⏱️ <strong>Duration:</strong> ~8-10 minutes total
+            </div>
+            
             <div class="attention-box">
                 ⚠️ <strong>ATTENTION-DEMANDING TASK</strong><br>
-                This experiment requires your full concentration for 12-15 minutes. Please ensure you can focus without any distractions.
+                This experiment requires your full concentration for 8-10 minutes. Please ensure you can focus without any distractions.
             </div>
             
             <div class="instructions">
@@ -491,7 +505,7 @@
                 <ul>
                     <li>✓ Headphones or earphones (REQUIRED!)</li>
                     <li>✓ Quiet environment</li>
-                    <li>✓ 12-15 minutes of uninterrupted time</li>
+                    <li>✓ 8-10 minutes of uninterrupted time</li>
                     <li>✓ Full attention - no multitasking!</li>
                 </ul>
             </div>
@@ -526,11 +540,11 @@
                     <strong>👁️ Focus Reminder:</strong> Watch the circle show <strong>1</strong> or <strong>2</strong> to track which tone is playing, or close your eyes and focus on the sound. Use your gut feeling - don't count!
                 </div>
             </div>
-            <div class="trial-info">Practice: <span id="practiceTrialNum">1</span> / 20</div>
+            <div class="trial-info">Practice: <span id="practiceTrialNum">1</span> / 10</div>
             
             <div class="visual-cue" id="practiceVisual">○</div>
             
-            <div id="practiceStatus" class="status">Starting in <span class="countdown" id="practiceCountdown">3</span>...</div>
+            <div id="practiceStatus" class="status">Starting in <span class="countdown" id="practiceCountdown">2</span>...</div>
             <div id="practiceFeedback" class="feedback"></div>
             
             <div class="touch-buttons hidden" id="practiceButtons">
@@ -559,11 +573,11 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
-            <div class="trial-info">Trial: <span id="trialNum">0</span> / <span id="totalTrials">40</span></div>
+            <div class="trial-info">Trial: <span id="trialNum">0</span> / <span id="totalTrials">30</span> | <span id="timeEstimate">~7 min remaining</span></div>
             
             <div class="visual-cue" id="experimentVisual">○</div>
             
-            <div id="status">Starting in <span class="countdown" id="experimentCountdown">3</span>...</div>
+            <div id="status">Starting in <span class="countdown" id="experimentCountdown">2</span>...</div>
             
             <div class="touch-buttons hidden" id="experimentButtons">
                 <button class="touch-button" onclick="recordResponse('first')" id="expBtn1">
@@ -582,6 +596,9 @@
             <div class="instructions">
                 <p>You've completed Block <span id="completedBlock">1</span> of 3.</p>
                 <p>Great work! Take a short break if needed.</p>
+                <p style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <strong>⏱️ Time remaining:</strong> ~<span id="breakTimeEstimate">5</span> minutes
+                </p>
                 <div class="form-group">
                     <label>Did you count or tap during this block?</label>
                     <select id="certaintyRating">
@@ -673,18 +690,21 @@
             return audioContext;
         }
         
+        // ============================================================================
+        // OPTIMIZED EXPERIMENT PARAMETERS (8-10 MINUTE VERSION)
+        // ============================================================================
         const BASE_DURATIONS = [500, 1000, 2000];
         const ROVING_RANGE = 0.10;
         const TONE_FREQUENCY = 440;
-        const ISI = 1500;
-        const AUTO_START_DELAY = 2000;
+        const ISI = 1200;  // Reduced from 1500ms
+        const AUTO_START_DELAY = 1500;  // Reduced from 2000ms
         
-        const STAIRCASE_TRIALS = 40;
+        const STAIRCASE_TRIALS = 30;  // Reduced from 40 trials
         const INITIAL_DIFFERENCE = 0.5;
         const MIN_DIFFERENCE = 0.05;
         const STEP_SIZE_INITIAL = 0.08;
         const STEP_SIZE_FINAL = 0.02;
-        const REVERSALS_TARGET = 10;
+        const REVERSALS_TARGET = 8;
         
         // ============================================================================
         // DATA COLLECTION
@@ -779,7 +799,7 @@
         });
         
         function startCountdown(elementId, callback) {
-            let count = 3;
+            let count = 2;  // Reduced from 3
             const countdownEl = document.getElementById(elementId);
             
             const interval = setInterval(() => {
@@ -798,15 +818,21 @@
             autoStartTimer = setTimeout(callback, AUTO_START_DELAY);
         }
         
+        function updateTimeEstimate() {
+            const trialsRemaining = (3 - currentBlock - 1) * STAIRCASE_TRIALS + (STAIRCASE_TRIALS - currentTrial);
+            const minutesRemaining = Math.ceil(trialsRemaining * 6 / 60);
+            document.getElementById('timeEstimate').textContent = `~${minutesRemaining} min remaining`;
+        }
+        
         // ============================================================================
         // PRACTICE TRIALS
         // ============================================================================
         function generatePracticeTrials() {
             const trials = [];
             const standardDur = 800;
+            // 10 practice trials instead of 20
             const difficulties = [
-                0.5, 0.5, 0.4, 0.4, 0.35, 0.35, 0.3, 0.3, 0.25, 0.25,
-                0.2, 0.2, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15
+                0.5, 0.5, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.15, 0.15
             ];
             
             difficulties.forEach((diff) => {
@@ -873,7 +899,7 @@
             status.textContent = 'Get ready...';
             visual.textContent = '○';
             visual.classList.remove('active');
-            await new Promise(resolve => setTimeout(resolve, 800));
+            await new Promise(resolve => setTimeout(resolve, 600));
             
             status.textContent = '🔊 First tone...';
             status.className = 'status status-playing';
@@ -960,6 +986,7 @@
                 `Block ${currentBlock + 1} of 3 (Base Duration: ${baseDuration}ms)`;
             document.getElementById('totalTrials').textContent = STAIRCASE_TRIALS;
             updateProgress();
+            updateTimeEstimate();
             
             startCountdown('experimentCountdown', runTrial);
         }
@@ -997,7 +1024,7 @@
             status.textContent = 'Get ready...';
             visual.textContent = '○';
             visual.classList.remove('active');
-            await new Promise(resolve => setTimeout(resolve, 800));
+            await new Promise(resolve => setTimeout(resolve, 600));
             
             status.textContent = '🔊 First tone...';
             status.className = 'status status-playing';
@@ -1066,6 +1093,7 @@
             document.getElementById('experimentButtons').classList.add('hidden');
             currentTrial++;
             updateProgress();
+            updateTimeEstimate();
             
             document.getElementById('status').textContent = 'Next trial starting...';
             scheduleAutoStart(runTrial);
@@ -1115,6 +1143,10 @@
             document.getElementById('experimentScreen').classList.add('hidden');
             document.getElementById('breakScreen').classList.remove('hidden');
             document.getElementById('completedBlock').textContent = currentBlock + 1;
+            
+            const blocksRemaining = 2 - currentBlock;
+            const minutesRemaining = Math.ceil(blocksRemaining * STAIRCASE_TRIALS * 6 / 60);
+            document.getElementById('breakTimeEstimate').textContent = minutesRemaining;
             
             document.getElementById('certaintyRating').onchange = function() {
                 document.getElementById('continueButton').disabled = !this.value;
@@ -1207,7 +1239,6 @@
                     body: JSON.stringify(participantData)
                 });
                 
-                // Wait a bit to ensure data is received
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 document.getElementById('dataStatus').innerHTML = 
