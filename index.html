@@ -85,6 +85,25 @@
             margin: 6px 0;
         }
         
+        .attention-box {
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff9800;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #e65100;
+        }
+        
+        .focus-tip {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            margin: 12px 0;
+            font-size: 14px;
+        }
+        
         .key-instruction {
             background: #e3f2fd;
             padding: 15px;
@@ -369,9 +388,55 @@
             border: 2px solid #4CAF50;
         }
         
+        .score-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(102,126,234,0.3);
+        }
+        
+        .score-display h2 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+        }
+        
+        .final-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .score-breakdown {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        
+        .score-breakdown div {
+            margin: 8px 0;
+        }
+        
+        .performance-message {
+            margin-top: 15px;
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+        
         .email-input-group {
             max-width: 100%;
             margin: 20px auto;
+        }
+        
+        .warning-box {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f44336;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #c62828;
         }
     </style>
 </head>
@@ -383,21 +448,51 @@
             <div id="deviceInfo" class="device-check">
                 <strong>📱 Device Detected:</strong> <span id="deviceType">Desktop</span>
             </div>
+            
+            <div class="attention-box">
+                ⚠️ <strong>ATTENTION-DEMANDING TASK</strong><br>
+                This experiment requires your full concentration for 12-15 minutes. Please ensure you can focus without any distractions.
+            </div>
+            
             <div class="instructions">
-                <h3>Welcome!</h3>
-                <p>This study tests how humans perceive time durations (Weber's Law research).</p>
-                <p><strong>What you'll do:</strong></p>
+                <h3>What is this experiment about?</h3>
+                <p>This study investigates Weber's Law - how humans perceive time durations. You'll listen to pairs of tones and judge which one lasted longer.</p>
+                
+                <p style="margin-top: 15px;"><strong>🎯 The Task:</strong></p>
                 <ul>
-                    <li>Listen to pairs of tones through <strong>headphones</strong></li>
-                    <li>Watch a visual circle that lights up during each tone</li>
-                    <li>Decide which tone lasted longer</li>
-                    <li>Complete ~12-15 minutes (practice + 3 blocks)</li>
+                    <li>You'll hear <strong>two tones</strong> separated by a pause</li>
+                    <li>One tone will be slightly longer than the other</li>
+                    <li>Your job: decide which tone (FIRST or SECOND) lasted longer</li>
+                    <li>The differences are subtle - trust your instinct!</li>
                 </ul>
-                <p><strong>⚠️ REQUIREMENTS:</strong></p>
+                
+                <div class="focus-tip">
+                    <strong>👁️ Focus Strategy:</strong> During each tone, you can either:
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li><strong>Close your eyes</strong> and focus entirely on the sound, OR</li>
+                        <li><strong>Watch the visual circle</strong> - it will show <strong>1</strong> or <strong>2</strong> to indicate which tone is playing</li>
+                    </ul>
+                    Choose whichever helps you concentrate better!
+                </div>
+                
+                <p style="margin-top: 15px;"><strong>⚠️ CRITICAL RULES:</strong></p>
                 <ul>
-                    <li>✓ Headphones/earphones (REQUIRED!)</li>
+                    <li><strong>🚫 DO NOT count</strong> (1-2-3-4...) during the tones</li>
+                    <li><strong>🚫 DO NOT tap</strong> your finger or foot to keep time</li>
+                    <li><strong>🚫 DO NOT look at clocks</strong> or timers</li>
+                    <li><strong>✓ DO use your gut feeling</strong> - your natural, intuitive sense of time</li>
+                </ul>
+                
+                <p style="margin-top: 15px; background: #e8f5e9; padding: 10px; border-radius: 8px;">
+                    <strong>💡 Important:</strong> We're testing your <em>inherent perception</em> of time, not your ability to count. There are no "wrong" answers - just respond with your immediate impression!
+                </p>
+                
+                <p style="margin-top: 15px;"><strong>📋 What you need:</strong></p>
+                <ul>
+                    <li>✓ Headphones or earphones (REQUIRED!)</li>
                     <li>✓ Quiet environment</li>
-                    <li>✓ Do NOT count or tap - use your gut feeling!</li>
+                    <li>✓ 12-15 minutes of uninterrupted time</li>
+                    <li>✓ Full attention - no multitasking!</li>
                 </ul>
             </div>
             
@@ -425,7 +520,11 @@
             <h1>Practice Block</h1>
             <div class="instructions">
                 <p><strong>Practice with easy trials (you'll get feedback!)</strong></p>
-                <p>After hearing both tones, tap the button:</p>
+                <p>After hearing both tones, tap the button indicating which was LONGER.</p>
+                
+                <div class="focus-tip">
+                    <strong>👁️ Focus Reminder:</strong> Watch the circle show <strong>1</strong> or <strong>2</strong> to track which tone is playing, or close your eyes and focus on the sound. Use your gut feeling - don't count!
+                </div>
             </div>
             <div class="trial-info">Practice: <span id="practiceTrialNum">1</span> / 20</div>
             
@@ -449,6 +548,11 @@
         <div id="experimentScreen" class="hidden">
             <h1>Main Experiment</h1>
             <div class="block-info" id="blockInfo">Block 1 of 3</div>
+            
+            <div class="focus-tip" style="font-size: 13px; padding: 10px; margin: 10px 0;">
+                <strong>👁️ Remember:</strong> Focus on the numbers <strong>1</strong> and <strong>2</strong> on the circle, or close your eyes. Use your gut feeling - don't count or tap!
+            </div>
+            
             <div class="staircase-info">
                 ⚡ Adaptive task - difficulty adjusts to your performance
             </div>
@@ -477,13 +581,13 @@
             <h1>Take a Break! 😊</h1>
             <div class="instructions">
                 <p>You've completed Block <span id="completedBlock">1</span> of 3.</p>
-                <p>Take a short break if needed.</p>
+                <p>Great work! Take a short break if needed.</p>
                 <div class="form-group">
                     <label>Did you count or tap during this block?</label>
                     <select id="certaintyRating">
                         <option value="">Select...</option>
-                        <option value="5">No, I didn't count at all</option>
-                        <option value="4">Mostly didn't count</option>
+                        <option value="5">No, I used my gut feeling only</option>
+                        <option value="4">Mostly used gut feeling</option>
                         <option value="3">Sometimes counted</option>
                         <option value="2">Often counted</option>
                         <option value="1">Yes, I counted a lot</option>
@@ -495,17 +599,35 @@
 
         <!-- End Screen -->
         <div id="endScreen" class="hidden">
-            <h1>🎉 Complete!</h1>
+            <h1>🎉 Experiment Complete!</h1>
+            
+            <!-- Performance Score Display -->
+            <div class="score-display">
+                <h2>🎯 Your Performance Score</h2>
+                <div class="final-score" id="finalScore">--</div>
+                <div class="score-breakdown" id="scoreBreakdown">
+                    <div id="accuracyDisplay"></div>
+                    <div id="consistencyDisplay"></div>
+                </div>
+                <div class="performance-message" id="performanceMessage"></div>
+            </div>
+            
+            <div class="warning-box">
+                ⚠️ <strong>PLEASE WAIT!</strong> Do not close this window while data is being sent. You'll see a confirmation message when it's safe to close.
+            </div>
+            
             <div class="success-message">
                 <h3>Thank you for participating!</h3>
-                <p id="dataStatus">📤 Sending your data...</p>
+                <p id="dataStatus">📤 Sending your data to the researcher...</p>
             </div>
+            
             <div class="instructions">
                 <p><strong>What's happening:</strong></p>
                 <ul>
-                    <li>Your data is being automatically sent to the researcher</li>
-                    <li>You can also download a backup copy below</li>
-                    <li>No need to email anything - it's automatic!</li>
+                    <li>✓ Your performance score has been calculated</li>
+                    <li>⏳ Data is being sent automatically (please wait)</li>
+                    <li>✓ You can download a backup copy below</li>
+                    <li>✓ Once data is sent, you're free to close this window</li>
                 </ul>
             </div>
             <button class="primary" onclick="downloadData()">📥 Download Backup Copy</button>
@@ -835,7 +957,7 @@
             const baseDuration = BASE_DURATIONS[blockOrder[currentBlock]];
             
             document.getElementById('blockInfo').textContent = 
-                `Block ${currentBlock + 1} of 3 (Duration: ${baseDuration}ms)`;
+                `Block ${currentBlock + 1} of 3 (Base Duration: ${baseDuration}ms)`;
             document.getElementById('totalTrials').textContent = STAIRCASE_TRIALS;
             updateProgress();
             
@@ -1021,11 +1143,60 @@
         }
         
         // ============================================================================
+        // PERFORMANCE SCORE CALCULATION
+        // ============================================================================
+        function calculateAndDisplayScore() {
+            const correctTrials = participantData.trials.filter(t => t.correct).length;
+            const totalTrials = participantData.trials.length;
+            const accuracy = (correctTrials / totalTrials) * 100;
+            
+            const rts = participantData.trials.map(t => t.rt);
+            const avgRT = rts.reduce((a, b) => a + b, 0) / rts.length;
+            const rtConsistency = Math.max(0, 100 - (avgRT / 30));
+            
+            const blocks = [1, 2, 3];
+            const accuracies = blocks.map(block => {
+                const blockTrials = participantData.trials.filter(t => t.block === block);
+                return blockTrials.filter(t => t.correct).length / blockTrials.length;
+            });
+            const avgAcc = accuracies.reduce((a, b) => a + b) / accuracies.length;
+            const variance = accuracies.reduce((sum, acc) => sum + Math.pow(acc - avgAcc, 2), 0) / accuracies.length;
+            const consistency = Math.max(0, 100 - (variance * 500));
+            
+            const finalScore = Math.round(
+                (accuracy * 0.6) +
+                (consistency * 0.3) +
+                (rtConsistency * 0.1)
+            );
+            
+            document.getElementById('finalScore').textContent = finalScore + '%';
+            document.getElementById('accuracyDisplay').textContent = 
+                `✓ Accuracy: ${accuracy.toFixed(1)}% (${correctTrials}/${totalTrials} correct)`;
+            document.getElementById('consistencyDisplay').textContent = 
+                `✓ Consistency: ${consistency.toFixed(1)}%`;
+            
+            let message = '';
+            if (finalScore >= 90) {
+                message = '🌟 Outstanding! You have excellent temporal perception!';
+            } else if (finalScore >= 80) {
+                message = '🎯 Great job! Your time discrimination is very good!';
+            } else if (finalScore >= 70) {
+                message = '👍 Good work! You performed above average!';
+            } else if (finalScore >= 60) {
+                message = '✓ Nice effort! You completed the challenging task!';
+            } else {
+                message = '✓ Thanks for participating! This was a difficult task.';
+            }
+            
+            document.getElementById('performanceMessage').textContent = message;
+        }
+        
+        // ============================================================================
         // SEND DATA TO GOOGLE SHEETS
         // ============================================================================
         async function sendDataToGoogleSheets() {
             try {
-                document.getElementById('dataStatus').textContent = '📤 Sending your data...';
+                document.getElementById('dataStatus').textContent = '📤 Sending your data... (please wait, do not close window)';
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
@@ -1036,12 +1207,17 @@
                     body: JSON.stringify(participantData)
                 });
                 
-                document.getElementById('dataStatus').textContent = '✅ Data sent successfully! Thank you!';
+                // Wait a bit to ensure data is received
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                document.getElementById('dataStatus').innerHTML = 
+                    '✅ <strong>Data sent successfully!</strong><br>You can now safely close this window or download a backup copy below.';
                 document.getElementById('dataStatus').style.color = '#2e7d32';
                 return true;
             } catch (error) {
                 console.error('Error sending data:', error);
-                document.getElementById('dataStatus').textContent = '⚠️ Could not send automatically. Please download backup below.';
+                document.getElementById('dataStatus').innerHTML = 
+                    '⚠️ Could not send data automatically.<br><strong>Please download backup below and email it to the researcher.</strong>';
                 document.getElementById('dataStatus').style.color = '#f57c00';
                 return false;
             }
@@ -1050,7 +1226,7 @@
         function endExperiment() {
             clearTimeout(autoStartTimer);
             
-            const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
+            const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Used gut feeling only\n2 = Mostly gut feeling\n3 = Sometimes counted\n4 = Often counted\n5 = Counted a lot\n\nEnter 1-5:");
             const rating = parseInt(choice);
             
             if (rating && rating >= 1 && rating <= 5) {
@@ -1064,7 +1240,7 @@
                 document.getElementById('experimentScreen').classList.add('hidden');
                 document.getElementById('endScreen').classList.remove('hidden');
                 
-                // Automatically send data
+                calculateAndDisplayScore();
                 sendDataToGoogleSheets();
                 
             } else {
@@ -1086,7 +1262,7 @@
             a.click();
             window.URL.revokeObjectURL(url);
             
-            alert('✓ Backup downloaded!');
+            alert('✓ Backup downloaded successfully!');
         }
         
         function generateCSV() {
