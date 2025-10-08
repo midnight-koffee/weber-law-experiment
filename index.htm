@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Duration Discrimination Study - Weber's Law</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 40px;
+            }
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 28px;
+            }
+        }
+        
+        .instructions {
+            text-align: left;
+            line-height: 1.6;
+            color: #555;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 768px) {
+            .instructions {
+                font-size: 16px;
+                line-height: 1.8;
+            }
+        }
+        
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .instructions li {
+            margin: 6px 0;
+        }
+        
+        .key-instruction {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #2196F3;
+        }
+        
+        .key-instruction h3 {
+            color: #1976D2;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        /* Touch buttons for mobile */
+        .touch-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .touch-button {
+            flex: 1;
+            max-width: 150px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            touch-action: manipulation;
+        }
+        
+        .touch-button:active:not(:disabled) {
+            transform: scale(0.95);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+        }
+        
+        .touch-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (min-width: 768px) {
+            .touch-button {
+                padding: 40px 30px;
+                font-size: 20px;
+            }
+        }
+        
+        .desktop-hint {
+            display: none;
+            font-size: 13px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .desktop-hint {
+                display: block;
+            }
+        }
+        
+        button.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            margin: 10px;
+            touch-action: manipulation;
+        }
+        
+        button.primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        button.primary:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        
+        button.primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .visual-cue {
+            width: 120px;
+            height: 120px;
+            margin: 30px auto;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #999;
+        }
+        
+        @media (min-width: 768px) {
+            .visual-cue {
+                width: 150px;
+                height: 150px;
+                font-size: 48px;
+            }
+        }
+        
+        .visual-cue.active {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+            color: white;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .trial-info {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+        
+        .block-info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #e8eaf6 100%);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            color: #1565c0;
+            font-weight: 600;
+            font-size: 15px;
+            border: 2px solid #90caf9;
+        }
+        
+        @media (min-width: 768px) {
+            .block-info {
+                font-size: 18px;
+                padding: 20px;
+            }
+        }
+        
+        #status {
+            font-size: 18px;
+            color: #555;
+            margin: 20px 0;
+            min-height: 25px;
+            font-weight: 500;
+        }
+        
+        @media (min-width: 768px) {
+            #status {
+                font-size: 22px;
+            }
+        }
+        
+        .status-playing {
+            color: #4CAF50 !important;
+            font-weight: 700;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .feedback {
+            font-size: 20px;
+            margin: 15px 0;
+            min-height: 25px;
+            font-weight: 600;
+        }
+        
+        .feedback.correct {
+            color: #4CAF50;
+        }
+        
+        .feedback.incorrect {
+            color: #f44336;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        input[type="text"], input[type="email"], select {
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 350px;
+            margin: 10px auto;
+            display: block;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group {
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .staircase-info {
+            background: #fff3e0;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #e65100;
+            font-size: 13px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .countdown {
+            font-size: 36px;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        @media (min-width: 768px) {
+            .countdown {
+                font-size: 48px;
+            }
+        }
+        
+        .device-check {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .device-check.mobile {
+            background: #e3f2fd;
+            border-left-color: #2196F3;
+        }
+        
+        .success-message {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            color: #2e7d32;
+            font-size: 16px;
+            border: 2px solid #4CAF50;
+        }
+        
+        .email-input-group {
+            max-width: 100%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen">
+            <h1>⏱️ Duration Discrimination Study</h1>
+            <div id="deviceInfo" class="device-check">
+                <strong>📱 Device Detected:</strong> <span id="deviceType">Desktop</span>
+            </div>
+            <div class="instructions">
+                <h3>Welcome!</h3>
+                <p>This study tests how humans perceive time durations (Weber's Law research).</p>
+                <p><strong>What you'll do:</strong></p>
+                <ul>
+                    <li>Listen to pairs of tones through <strong>headphones</strong></li>
+                    <li>Watch a visual circle that lights up during each tone</li>
+                    <li>Decide which tone lasted longer</li>
+                    <li>Complete ~12-15 minutes (practice + 3 blocks)</li>
+                </ul>
+                <p><strong>⚠️ REQUIREMENTS:</strong></p>
+                <ul>
+                    <li>✓ Headphones/earphones (REQUIRED!)</li>
+                    <li>✓ Quiet environment</li>
+                    <li>✓ Do NOT count or tap - use your gut feeling!</li>
+                </ul>
+            </div>
+            
+            <div class="key-instruction">
+                <h3>🎮 Controls</h3>
+                <p id="controlsInfo">You'll use <strong>on-screen buttons</strong> to respond</p>
+            </div>
+            
+            <div class="form-group">
+                <label>Your Name/ID:</label>
+                <input type="text" id="participantId" placeholder="e.g., John, P01, etc.">
+            </div>
+            
+            <div class="form-group email-input-group">
+                <label>Your Email (to receive results):</label>
+                <input type="email" id="participantEmail" placeholder="your.email@example.com">
+                <small style="color: #666; font-size: 12px;">Optional - if you want your data emailed to you</small>
+            </div>
+            
+            <button class="primary" onclick="startPractice()">Start Practice</button>
+        </div>
+
+        <!-- Practice Screen -->
+        <div id="practiceScreen" class="hidden">
+            <h1>Practice Block</h1>
+            <div class="instructions">
+                <p><strong>Practice with easy trials (you'll get feedback!)</strong></p>
+                <p>After hearing both tones, tap the button:</p>
+            </div>
+            <div class="trial-info">Practice: <span id="practiceTrialNum">1</span> / 20</div>
+            
+            <div class="visual-cue" id="practiceVisual">○</div>
+            
+            <div id="practiceStatus" class="status">Starting in <span class="countdown" id="practiceCountdown">3</span>...</div>
+            <div id="practiceFeedback" class="feedback"></div>
+            
+            <div class="touch-buttons hidden" id="practiceButtons">
+                <button class="touch-button" onclick="recordResponse('first')" id="practiceBtn1">
+                    FIRST<br>TONE
+                </button>
+                <button class="touch-button" onclick="recordResponse('second')" id="practiceBtn2">
+                    SECOND<br>TONE
+                </button>
+            </div>
+            <div class="desktop-hint">Desktop users: You can also use ← and → arrow keys</div>
+        </div>
+
+        <!-- Main Experiment Screen -->
+        <div id="experimentScreen" class="hidden">
+            <h1>Main Experiment</h1>
+            <div class="block-info" id="blockInfo">Block 1 of 3</div>
+            <div class="staircase-info">
+                ⚡ Adaptive task - difficulty adjusts to your performance
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="trial-info">Trial: <span id="trialNum">0</span> / <span id="totalTrials">40</span></div>
+            
+            <div class="visual-cue" id="experimentVisual">○</div>
+            
+            <div id="status">Starting in <span class="countdown" id="experimentCountdown">3</span>...</div>
+            
+            <div class="touch-buttons hidden" id="experimentButtons">
+                <button class="touch-button" onclick="recordResponse('first')" id="expBtn1">
+                    FIRST<br>TONE
+                </button>
+                <button class="touch-button" onclick="recordResponse('second')" id="expBtn2">
+                    SECOND<br>TONE
+                </button>
+            </div>
+            <div class="desktop-hint">Desktop: Use ← and → arrow keys or tap buttons</div>
+        </div>
+
+        <!-- Break Screen -->
+        <div id="breakScreen" class="hidden">
+            <h1>Take a Break! 😊</h1>
+            <div class="instructions">
+                <p>You've completed Block <span id="completedBlock">1</span> of 3.</p>
+                <p>Take a short break if needed.</p>
+                <div class="form-group">
+                    <label>Did you count or tap during this block?</label>
+                    <select id="certaintyRating">
+                        <option value="">Select...</option>
+                        <option value="5">No, I didn't count at all</option>
+                        <option value="4">Mostly didn't count</option>
+                        <option value="3">Sometimes counted</option>
+                        <option value="2">Often counted</option>
+                        <option value="1">Yes, I counted a lot</option>
+                    </select>
+                </div>
+            </div>
+            <button class="primary" onclick="continueExperiment()" id="continueButton" disabled>Continue to Next Block</button>
+        </div>
+
+        <!-- End Screen -->
+        <div id="endScreen" class="hidden">
+            <h1>🎉 Complete!</h1>
+            <div class="success-message">
+                <h3>Thank you for participating!</h3>
+                <p>Your data has been recorded.</p>
+                <p id="dataStatus">Preparing your results...</p>
+            </div>
+            <div class="instructions">
+                <p><strong>What happens next:</strong></p>
+                <ul>
+                    <li>Download your data file below</li>
+                    <li id="emailStatus" class="hidden">We'll also email it to you at: <strong id="emailAddress"></strong></li>
+                    <li>Share your data file with the researcher</li>
+                </ul>
+            </div>
+            <button class="primary" onclick="downloadData()">📥 Download My Data</button>
+            <button class="primary" onclick="copyDataToClipboard()" style="background: #4CAF50;">📋 Copy Data</button>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // DEVICE DETECTION & SETUP
+        // ============================================================================
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        
+        // Update UI based on device
+        window.addEventListener('DOMContentLoaded', () => {
+            const deviceEl = document.getElementById('deviceType');
+            const deviceInfo = document.getElementById('deviceInfo');
+            const controlsInfo = document.getElementById('controlsInfo');
+            
+            if (isMobile) {
+                deviceEl.textContent = isIOS ? 'iOS Mobile' : 'Android Mobile';
+                deviceInfo.classList.add('mobile');
+                controlsInfo.innerHTML = 'You\'ll use <strong>on-screen tap buttons</strong> to respond';
+            } else {
+                deviceEl.textContent = 'Desktop/Laptop';
+                controlsInfo.innerHTML = 'You can use <strong>arrow keys</strong> (← →) or tap buttons';
+            }
+        });
+        
+        // ============================================================================
+        // AUDIO SETUP
+        // ============================================================================
+        let audioContext = null;
+        
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+        
+        const BASE_DURATIONS = [500, 1000, 2000];
+        const ROVING_RANGE = 0.10;
+        const TONE_FREQUENCY = 440;
+        const ISI = 1500;
+        const AUTO_START_DELAY = 2000;
+        
+        const STAIRCASE_TRIALS = 40;
+        const INITIAL_DIFFERENCE = 0.5;
+        const MIN_DIFFERENCE = 0.05;
+        const STEP_SIZE_INITIAL = 0.08;
+        const STEP_SIZE_FINAL = 0.02;
+        const REVERSALS_TARGET = 10;
+        
+        // ============================================================================
+        // DATA COLLECTION
+        // ============================================================================
+        let participantData = {
+            participantId: '',
+            participantEmail: '',
+            deviceType: isMobile ? (isIOS ? 'iOS' : 'Android') : 'Desktop',
+            blockOrder: [],
+            trials: [],
+            certaintyRatings: [],
+            startTime: null,
+            endTime: null
+        };
+        
+        let currentBlock = 0;
+        let blockOrder = [];
+        let currentTrial = 0;
+        let practiceTrial = 0;
+        let practiceTrials = [];
+        
+        let staircaseState = {
+            difference: INITIAL_DIFFERENCE,
+            stepSize: STEP_SIZE_INITIAL,
+            reversals: [],
+            lastResponse: null,
+            correctCount: 0
+        };
+        
+        let awaitingResponse = false;
+        let currentTrialData = null;
+        let autoStartTimer = null;
+        
+        // ============================================================================
+        // UTILITY FUNCTIONS
+        // ============================================================================
+        function generateBlockOrder(participantId) {
+            const hash = participantId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const orders = [
+                [0, 1, 2], [0, 2, 1], [1, 0, 2],
+                [1, 2, 0], [2, 0, 1], [2, 1, 0]
+            ];
+            return orders[hash % 6];
+        }
+        
+        function getRovingStandard(baseDuration) {
+            const variation = (Math.random() * 2 - 1) * ROVING_RANGE;
+            return Math.round(baseDuration * (1 + variation));
+        }
+        
+        async function playTone(duration) {
+            const ctx = initAudioContext();
+            return new Promise((resolve) => {
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+                
+                oscillator.frequency.value = TONE_FREQUENCY;
+                oscillator.type = 'sine';
+                
+                const now = ctx.currentTime;
+                const durationSec = duration / 1000;
+                const rampTime = 0.01;
+                
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.25, now + rampTime);
+                gainNode.gain.setValueAtTime(0.25, now + durationSec - rampTime);
+                gainNode.gain.linearRampToValueAtTime(0, now + durationSec);
+                
+                oscillator.start(now);
+                oscillator.stop(now + durationSec);
+                
+                setTimeout(resolve, duration + 20);
+            });
+        }
+        
+        // ============================================================================
+        // KEYBOARD & TOUCH HANDLING
+        // ============================================================================
+        document.addEventListener('keydown', (e) => {
+            if (!isMobile && awaitingResponse) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    recordResponse('first');
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    recordResponse('second');
+                }
+            }
+        });
+        
+        function startCountdown(elementId, callback) {
+            let count = 3;
+            const countdownEl = document.getElementById(elementId);
+            
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownEl.textContent = count;
+                } else {
+                    clearInterval(interval);
+                    callback();
+                }
+            }, 1000);
+        }
+        
+        function scheduleAutoStart(callback) {
+            clearTimeout(autoStartTimer);
+            autoStartTimer = setTimeout(callback, AUTO_START_DELAY);
+        }
+        
+        // ============================================================================
+        // PRACTICE TRIALS
+        // ============================================================================
+        function generatePracticeTrials() {
+            const trials = [];
+            const standardDur = 800;
+            const difficulties = [
+                0.5, 0.5, 0.4, 0.4, 0.35, 0.35, 0.3, 0.3, 0.25, 0.25,
+                0.2, 0.2, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15
+            ];
+            
+            difficulties.forEach((diff) => {
+                const sign = Math.random() < 0.5 ? 1 : -1;
+                const comparisonDur = Math.round(standardDur * (1 + sign * diff));
+                const order = Math.random() < 0.5 ? 'standard_first' : 'comparison_first';
+                
+                trials.push({
+                    standard: standardDur,
+                    comparison: comparisonDur,
+                    order: order,
+                    correctAnswer: comparisonDur > standardDur ? 
+                        (order === 'standard_first' ? 'second' : 'first') : 
+                        (order === 'standard_first' ? 'first' : 'second')
+                });
+            });
+            
+            return trials;
+        }
+        
+        function startPractice() {
+            const participantId = document.getElementById('participantId').value.trim();
+            const participantEmail = document.getElementById('participantEmail').value.trim();
+            
+            if (!participantId) {
+                alert('Please enter your name or ID');
+                return;
+            }
+            
+            // Initialize audio context on user interaction (required for mobile)
+            initAudioContext();
+            
+            participantData.participantId = participantId;
+            participantData.participantEmail = participantEmail;
+            participantData.startTime = new Date().toISOString();
+            
+            blockOrder = generateBlockOrder(participantId);
+            participantData.blockOrder = blockOrder.map(i => BASE_DURATIONS[i]);
+            
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('practiceScreen').classList.remove('hidden');
+            
+            practiceTrials = generatePracticeTrials();
+            startCountdown('practiceCountdown', runPracticeTrial);
+        }
+        
+        async function runPracticeTrial() {
+            if (practiceTrial >= practiceTrials.length) {
+                document.getElementById('practiceScreen').classList.add('hidden');
+                document.getElementById('experimentScreen').classList.remove('hidden');
+                startExperiment();
+                return;
+            }
+            
+            const trial = practiceTrials[practiceTrial];
+            const visual = document.getElementById('practiceVisual');
+            const status = document.getElementById('practiceStatus');
+            const buttons = document.getElementById('practiceButtons');
+            
+            document.getElementById('practiceTrialNum').textContent = practiceTrial + 1;
+            document.getElementById('practiceFeedback').textContent = '';
+            awaitingResponse = false;
+            buttons.classList.add('hidden');
+            
+            status.textContent = 'Get ready...';
+            visual.textContent = '○';
+            visual.classList.remove('active');
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            status.textContent = '🔊 First tone...';
+            status.className = 'status status-playing';
+            visual.textContent = '1';
+            visual.classList.add('active');
+            
+            const dur1 = trial.order === 'standard_first' ? trial.standard : trial.comparison;
+            await playTone(dur1);
+            
+            visual.classList.remove('active');
+            visual.textContent = '○';
+            
+            status.textContent = '⏸️ Pause...';
+            status.className = 'status';
+            await new Promise(resolve => setTimeout(resolve, ISI));
+            
+            status.textContent = '🔊 Second tone...';
+            status.className = 'status status-playing';
+            visual.textContent = '2';
+            visual.classList.add('active');
+            
+            const dur2 = trial.order === 'standard_first' ? trial.comparison : trial.standard;
+            await playTone(dur2);
+            
+            visual.classList.remove('active');
+            visual.textContent = '○';
+            
+            status.textContent = 'Which was LONGER? Tap a button';
+            status.className = 'status';
+            buttons.classList.remove('hidden');
+            awaitingResponse = true;
+            currentTrialData = trial;
+        }
+        
+        function recordPracticeResponse(response) {
+            if (!awaitingResponse) return;
+            awaitingResponse = false;
+            
+            const trial = currentTrialData;
+            const correct = response === trial.correctAnswer;
+            
+            document.getElementById('practiceButtons').classList.add('hidden');
+            
+            const feedback = document.getElementById('practiceFeedback');
+            feedback.textContent = correct ? '✓ Correct!' : `✗ Incorrect. The ${trial.correctAnswer} tone was longer.`;
+            feedback.className = correct ? 'feedback correct' : 'feedback incorrect';
+            
+            practiceTrial++;
+            document.getElementById('practiceStatus').textContent = 'Next trial starting soon...';
+            scheduleAutoStart(runPracticeTrial);
+        }
+        
+        function recordResponse(response) {
+            if (!awaitingResponse) return;
+            
+            if (document.getElementById('practiceScreen').classList.contains('hidden')) {
+                recordExperimentResponse(response);
+            } else {
+                recordPracticeResponse(response);
+            }
+        }
+        
+        // ============================================================================
+        // MAIN EXPERIMENT
+        // ============================================================================
+        function startExperiment() {
+            currentBlock = 0;
+            startBlock();
+        }
+        
+        function startBlock() {
+            staircaseState = {
+                difference: INITIAL_DIFFERENCE,
+                stepSize: STEP_SIZE_INITIAL,
+                reversals: [],
+                lastResponse: null,
+                correctCount: 0
+            };
+            
+            currentTrial = 0;
+            const baseDuration = BASE_DURATIONS[blockOrder[currentBlock]];
+            
+            document.getElementById('blockInfo').textContent = 
+                `Block ${currentBlock + 1} of 3 (Duration: ${baseDuration}ms)`;
+            document.getElementById('totalTrials').textContent = STAIRCASE_TRIALS;
+            updateProgress();
+            
+            startCountdown('experimentCountdown', runTrial);
+        }
+        
+        async function runTrial() {
+            if (currentTrial >= STAIRCASE_TRIALS || staircaseState.reversals.length >= REVERSALS_TARGET) {
+                if (currentBlock < BASE_DURATIONS.length - 1) {
+                    showBreak();
+                } else {
+                    endExperiment();
+                }
+                return;
+            }
+            
+            const baseDuration = BASE_DURATIONS[blockOrder[currentBlock]];
+            const standard = getRovingStandard(baseDuration);
+            const comparison = Math.round(standard * (1 + staircaseState.difference));
+            const order = Math.random() < 0.5 ? 'standard_first' : 'comparison_first';
+            
+            currentTrialData = {
+                baseDuration: baseDuration,
+                standard: standard,
+                comparison: comparison,
+                difference: staircaseState.difference,
+                order: order
+            };
+            
+            const visual = document.getElementById('experimentVisual');
+            const status = document.getElementById('status');
+            const buttons = document.getElementById('experimentButtons');
+            
+            awaitingResponse = false;
+            buttons.classList.add('hidden');
+            
+            status.textContent = 'Get ready...';
+            visual.textContent = '○';
+            visual.classList.remove('active');
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            status.textContent = '🔊 First tone...';
+            status.className = 'status status-playing';
+            visual.textContent = '1';
+            visual.classList.add('active');
+            
+            const dur1 = order === 'standard_first' ? standard : comparison;
+            await playTone(dur1);
+            
+            visual.classList.remove('active');
+            visual.textContent = '○';
+            
+            status.textContent = '⏸️ Pause...';
+            status.className = 'status';
+            await new Promise(resolve => setTimeout(resolve, ISI));
+            
+            status.textContent = '🔊 Second tone...';
+            status.className = 'status status-playing';
+            visual.textContent = '2';
+            visual.classList.add('active');
+            
+            const dur2 = order === 'standard_first' ? comparison : standard;
+            await playTone(dur2);
+            
+            visual.classList.remove('active');
+            visual.textContent = '○';
+            
+            status.textContent = 'Which was LONGER? Tap a button';
+            status.className = 'status';
+            buttons.classList.remove('hidden');
+            awaitingResponse = true;
+            currentTrialData.responseStartTime = Date.now();
+        }
+        
+        function recordExperimentResponse(response) {
+            if (!awaitingResponse) return;
+            awaitingResponse = false;
+            
+            const trial = currentTrialData;
+            const rt = Date.now() - trial.responseStartTime;
+            
+            const comparisonLonger = trial.comparison > trial.standard;
+            const respondedComparisonLonger = 
+                (response === 'second' && trial.order === 'standard_first') ||
+                (response === 'first' && trial.order === 'comparison_first');
+            const correct = comparisonLonger === respondedComparisonLonger;
+            
+            updateStaircase(correct);
+            
+            participantData.trials.push({
+                block: currentBlock + 1,
+                blockOrderIndex: blockOrder[currentBlock],
+                trial: currentTrial + 1,
+                baseDuration: trial.baseDuration,
+                actualStandard: trial.standard,
+                comparisonDuration: trial.comparison,
+                difference: trial.difference,
+                order: trial.order,
+                response: response,
+                correct: correct,
+                rt: rt,
+                reversals: staircaseState.reversals.length,
+                timestamp: new Date().toISOString()
+            });
+            
+            document.getElementById('experimentButtons').classList.add('hidden');
+            currentTrial++;
+            updateProgress();
+            
+            document.getElementById('status').textContent = 'Next trial starting...';
+            scheduleAutoStart(runTrial);
+        }
+        
+        function updateStaircase(correct) {
+            const state = staircaseState;
+            
+            if (correct) {
+                state.correctCount++;
+                if (state.correctCount >= 2) {
+                    const oldDiff = state.difference;
+                    state.difference = Math.max(MIN_DIFFERENCE, state.difference - state.stepSize);
+                    state.correctCount = 0;
+                    
+                    if (state.lastResponse === false && oldDiff !== state.difference) {
+                        state.reversals.push(oldDiff);
+                        if (state.reversals.length >= 4) {
+                            state.stepSize = STEP_SIZE_FINAL;
+                        }
+                    }
+                    state.lastResponse = true;
+                }
+            } else {
+                const oldDiff = state.difference;
+                state.difference = Math.min(1.0, state.difference + state.stepSize);
+                state.correctCount = 0;
+                
+                if (state.lastResponse === true && oldDiff !== state.difference) {
+                    state.reversals.push(oldDiff);
+                    if (state.reversals.length >= 4) {
+                        state.stepSize = STEP_SIZE_FINAL;
+                    }
+                }
+                state.lastResponse = false;
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (currentTrial / STAIRCASE_TRIALS) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('trialNum').textContent = currentTrial;
+        }
+        
+        function showBreak() {
+            clearTimeout(autoStartTimer);
+            document.getElementById('experimentScreen').classList.add('hidden');
+            document.getElementById('breakScreen').classList.remove('hidden');
+            document.getElementById('completedBlock').textContent = currentBlock + 1;
+            
+            document.getElementById('certaintyRating').onchange = function() {
+                document.getElementById('continueButton').disabled = !this.value;
+            };
+        }
+        
+        function continueExperiment() {
+            const rating = document.getElementById('certaintyRating').value;
+            if (!rating) {
+                alert('Please select an option');
+                return;
+            }
+            
+            participantData.certaintyRatings.push({
+                block: currentBlock + 1,
+                rating: parseInt(rating)
+            });
+            
+            document.getElementById('breakScreen').classList.add('hidden');
+            document.getElementById('experimentScreen').classList.remove('hidden');
+            document.getElementById('certaintyRating').value = '';
+            document.getElementById('continueButton').disabled = true;
+            
+            currentBlock++;
+            startBlock();
+        }
+        
+        function endExperiment() {
+            clearTimeout(autoStartTimer);
+            
+            // Get final rating via alert for mobile compatibility
+            const ratingOptions = [
+                "No, I didn't count at all",
+                "Mostly didn't count",
+                "Sometimes counted",
+                "Often counted",
+                "Yes, I counted a lot"
+            ];
+            
+            let rating = null;
+            if (isMobile) {
+                const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
+                rating = parseInt(choice);
+            } else {
+                const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
+                rating = parseInt(choice);
+            }
+            
+            if (rating && rating >= 1 && rating <= 5) {
+                participantData.certaintyRatings.push({
+                    block: 3,
+                    rating: 6 - rating // Reverse so 5 = didn't count
+                });
+                
+                participantData.endTime = new Date().toISOString();
+                
+                document.getElementById('experimentScreen').classList.add('hidden');
+                document.getElementById('endScreen').classList.remove('hidden');
+                
+                // Show email status if provided
+                if (participantData.participantEmail) {
+                    document.getElementById('emailStatus').classList.remove('hidden');
+                    document.getElementById('emailAddress').textContent = participantData.participantEmail;
+                }
+                
+                document.getElementById('dataStatus').textContent = '✓ Data ready to download!';
+            } else {
+                alert('Please enter a number between 1 and 5');
+                endExperiment();
+            }
+        }
+        
+        // ============================================================================
+        // DATA EXPORT
+        // ============================================================================
+        function downloadData() {
+            const csv = generateCSV();
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `weber_${participantData.participantId}_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            alert('✓ Data downloaded! Please share this file with the researcher.');
+        }
+        
+        function copyDataToClipboard() {
+            const csv = generateCSV();
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(csv).then(() => {
+                    alert('✓ Data copied to clipboard! You can paste it in an email.');
+                }).catch(() => {
+                    fallbackCopy(csv);
+                });
+            } else {
+                fallbackCopy(csv);
+            }
+        }
+        
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                alert('✓ Data copied! You can paste it in an email.');
+            } catch (err) {
+                alert('❌ Could not copy. Please use the download button instead.');
+            }
+            
+            document.body.removeChild(textarea);
+        }
+        
+        function generateCSV() {
+            let csv = `ParticipantID,Email,DeviceType,BlockOrderIndex,Block,Trial,BaseDuration,ActualStandard,ComparisonDuration,Difference,Order,Response,Correct,RT,Reversals,Timestamp\n`;
+            
+            participantData.trials.forEach(trial => {
+                csv += `${participantData.participantId},${participantData.participantEmail || 'N/A'},${participantData.deviceType},${trial.blockOrderIndex},${trial.block},${trial.trial},${trial.baseDuration},${trial.actualStandard},${trial.comparisonDuration},${trial.difference},${trial.order},${trial.response},${trial.correct},${trial.rt},${trial.reversals},${trial.timestamp}\n`;
+            });
+            
+            csv += '\n\nMetadata\n';
+            csv += `StartTime,${participantData.startTime}\n`;
+            csv += `EndTime,${participantData.endTime}\n`;
+            csv += `BlockOrder,${participantData.blockOrder.join('-')}\n`;
+            csv += `DeviceType,${participantData.deviceType}\n`;
+            
+            csv += '\n\nCertainty Ratings\n';
+            csv += 'Block,Rating\n';
+            participantData.certaintyRatings.forEach(rating => {
+                csv += `${rating.block},${rating.rating}\n`;
+            });
+            
+            return csv;
+        }
+    </script>
+</body>
+</html>
