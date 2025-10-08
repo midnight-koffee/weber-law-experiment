@@ -99,7 +99,6 @@
             font-size: 16px;
         }
         
-        /* Touch buttons for mobile */
         .touch-buttons {
             display: flex;
             justify-content: center;
@@ -413,9 +412,9 @@
             </div>
             
             <div class="form-group email-input-group">
-                <label>Your Email (to receive results):</label>
+                <label>Your Email (optional):</label>
                 <input type="email" id="participantEmail" placeholder="your.email@example.com">
-                <small style="color: #666; font-size: 12px;">Optional - if you want your data emailed to you</small>
+                <small style="color: #666; font-size: 12px;">Data will be sent automatically to the researcher</small>
             </div>
             
             <button class="primary" onclick="startPractice()">Start Practice</button>
@@ -499,30 +498,32 @@
             <h1>🎉 Complete!</h1>
             <div class="success-message">
                 <h3>Thank you for participating!</h3>
-                <p>Your data has been recorded.</p>
-                <p id="dataStatus">Preparing your results...</p>
+                <p id="dataStatus">📤 Sending your data...</p>
             </div>
             <div class="instructions">
-                <p><strong>What happens next:</strong></p>
+                <p><strong>What's happening:</strong></p>
                 <ul>
-                    <li>Download your data file below</li>
-                    <li id="emailStatus" class="hidden">We'll also email it to you at: <strong id="emailAddress"></strong></li>
-                    <li>Share your data file with the researcher</li>
+                    <li>Your data is being automatically sent to the researcher</li>
+                    <li>You can also download a backup copy below</li>
+                    <li>No need to email anything - it's automatic!</li>
                 </ul>
             </div>
-            <button class="primary" onclick="downloadData()">📥 Download My Data</button>
-            <button class="primary" onclick="copyDataToClipboard()" style="background: #4CAF50;">📋 Copy Data</button>
+            <button class="primary" onclick="downloadData()">📥 Download Backup Copy</button>
         </div>
     </div>
 
     <script>
+        // ============================================================================
+        // GOOGLE SHEETS INTEGRATION
+        // ============================================================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-sbiqD9Ch3LDvIvSnmCaOTyeuNXsm74rrPTfn3wARX6QMAKE6oRgxcahsgWMfZzY/exec';
+        
         // ============================================================================
         // DEVICE DETECTION & SETUP
         // ============================================================================
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         
-        // Update UI based on device
         window.addEventListener('DOMContentLoaded', () => {
             const deviceEl = document.getElementById('deviceType');
             const deviceInfo = document.getElementById('deviceInfo');
@@ -713,7 +714,6 @@
                 return;
             }
             
-            // Initialize audio context on user interaction (required for mobile)
             initAudioContext();
             
             participantData.participantId = participantId;
@@ -1020,31 +1020,43 @@
             startBlock();
         }
         
+        // ============================================================================
+        // SEND DATA TO GOOGLE SHEETS
+        // ============================================================================
+        async function sendDataToGoogleSheets() {
+            try {
+                document.getElementById('dataStatus').textContent = '📤 Sending your data...';
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(participantData)
+                });
+                
+                document.getElementById('dataStatus').textContent = '✅ Data sent successfully! Thank you!';
+                document.getElementById('dataStatus').style.color = '#2e7d32';
+                return true;
+            } catch (error) {
+                console.error('Error sending data:', error);
+                document.getElementById('dataStatus').textContent = '⚠️ Could not send automatically. Please download backup below.';
+                document.getElementById('dataStatus').style.color = '#f57c00';
+                return false;
+            }
+        }
+        
         function endExperiment() {
             clearTimeout(autoStartTimer);
             
-            // Get final rating via alert for mobile compatibility
-            const ratingOptions = [
-                "No, I didn't count at all",
-                "Mostly didn't count",
-                "Sometimes counted",
-                "Often counted",
-                "Yes, I counted a lot"
-            ];
-            
-            let rating = null;
-            if (isMobile) {
-                const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
-                rating = parseInt(choice);
-            } else {
-                const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
-                rating = parseInt(choice);
-            }
+            const choice = prompt("Final question: Did you count or tap during the last block?\n\n1 = Didn't count at all\n2 = Mostly didn't\n3 = Sometimes\n4 = Often\n5 = Counted a lot\n\nEnter 1-5:");
+            const rating = parseInt(choice);
             
             if (rating && rating >= 1 && rating <= 5) {
                 participantData.certaintyRatings.push({
                     block: 3,
-                    rating: 6 - rating // Reverse so 5 = didn't count
+                    rating: 6 - rating
                 });
                 
                 participantData.endTime = new Date().toISOString();
@@ -1052,13 +1064,9 @@
                 document.getElementById('experimentScreen').classList.add('hidden');
                 document.getElementById('endScreen').classList.remove('hidden');
                 
-                // Show email status if provided
-                if (participantData.participantEmail) {
-                    document.getElementById('emailStatus').classList.remove('hidden');
-                    document.getElementById('emailAddress').textContent = participantData.participantEmail;
-                }
+                // Automatically send data
+                sendDataToGoogleSheets();
                 
-                document.getElementById('dataStatus').textContent = '✓ Data ready to download!';
             } else {
                 alert('Please enter a number between 1 and 5');
                 endExperiment();
@@ -1066,7 +1074,7 @@
         }
         
         // ============================================================================
-        // DATA EXPORT
+        // BACKUP DOWNLOAD
         // ============================================================================
         function downloadData() {
             const csv = generateCSV();
@@ -1078,39 +1086,7 @@
             a.click();
             window.URL.revokeObjectURL(url);
             
-            alert('✓ Data downloaded! Please share this file with the researcher.');
-        }
-        
-        function copyDataToClipboard() {
-            const csv = generateCSV();
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(csv).then(() => {
-                    alert('✓ Data copied to clipboard! You can paste it in an email.');
-                }).catch(() => {
-                    fallbackCopy(csv);
-                });
-            } else {
-                fallbackCopy(csv);
-            }
-        }
-        
-        function fallbackCopy(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                document.execCommand('copy');
-                alert('✓ Data copied! You can paste it in an email.');
-            } catch (err) {
-                alert('❌ Could not copy. Please use the download button instead.');
-            }
-            
-            document.body.removeChild(textarea);
+            alert('✓ Backup downloaded!');
         }
         
         function generateCSV() {
