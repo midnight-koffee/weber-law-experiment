@@ -460,12 +460,12 @@
             </div>
             
             <div class="time-estimate">
-                ⏱️ <strong>Duration:</strong> ~8-10 minutes total
+                ⏱️ <strong>Duration:</strong> ~7-8 minutes total
             </div>
             
             <div class="attention-box">
                 ⚠️ <strong>ATTENTION-DEMANDING TASK</strong><br>
-                This experiment requires your full concentration for 8-10 minutes. Please ensure you can focus without any distractions.
+                This experiment requires your full concentration for 7-8 minutes. Please ensure you can focus without any distractions.
             </div>
             
             <div class="instructions">
@@ -505,7 +505,7 @@
                 <ul>
                     <li>✓ Headphones or earphones (REQUIRED!)</li>
                     <li>✓ Quiet environment</li>
-                    <li>✓ 8-10 minutes of uninterrupted time</li>
+                    <li>✓ 7-8 minutes of uninterrupted time</li>
                     <li>✓ Full attention - no multitasking!</li>
                 </ul>
             </div>
@@ -573,7 +573,7 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
-            <div class="trial-info">Trial: <span id="trialNum">0</span> / <span id="totalTrials">30</span> | <span id="timeEstimate">~7 min remaining</span></div>
+            <div class="trial-info">Trial: <span id="trialNum">0</span> / <span id="totalTrials">25</span> | <span id="timeEstimate">~6 min remaining</span></div>
             
             <div class="visual-cue" id="experimentVisual">○</div>
             
@@ -597,7 +597,7 @@
                 <p>You've completed Block <span id="completedBlock">1</span> of 3.</p>
                 <p>Great work! Take a short break if needed.</p>
                 <p style="background: #e8f5e9; padding: 10px; border-radius: 8px; margin-top: 10px;">
-                    <strong>⏱️ Time remaining:</strong> ~<span id="breakTimeEstimate">5</span> minutes
+                    <strong>⏱️ Time remaining:</strong> ~<span id="breakTimeEstimate">4</span> minutes
                 </p>
                 <div class="form-group">
                     <label>Did you count or tap during this block?</label>
@@ -691,7 +691,7 @@
         }
         
         // ============================================================================
-        // OPTIMIZED EXPERIMENT PARAMETERS (8-10 MINUTE VERSION)
+        // OPTIMIZED EXPERIMENT PARAMETERS (7-8 MINUTE VERSION)
         // ============================================================================
         const BASE_DURATIONS = [500, 1000, 2000];
         const ROVING_RANGE = 0.10;
@@ -699,12 +699,12 @@
         const ISI = 1200;  // Reduced from 1500ms
         const AUTO_START_DELAY = 1500;  // Reduced from 2000ms
         
-        const STAIRCASE_TRIALS = 25;  // Reduced from 40 trials
+        const STAIRCASE_TRIALS = 25;  // Reduced to 25 trials per block
         const INITIAL_DIFFERENCE = 0.5;
         const MIN_DIFFERENCE = 0.05;
         const STEP_SIZE_INITIAL = 0.08;
         const STEP_SIZE_FINAL = 0.02;
-        const REVERSALS_TARGET = 8;
+        const REVERSALS_TARGET = 6;  // Adjusted target for 25 trials
         
         // ============================================================================
         // DATA COLLECTION
@@ -830,7 +830,7 @@
         function generatePracticeTrials() {
             const trials = [];
             const standardDur = 800;
-            // 10 practice trials instead of 20
+            // 10 practice trials
             const difficulties = [
                 0.5, 0.5, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.15, 0.15
             ];
@@ -1320,4 +1320,3 @@
     </script>
 </body>
 </html>
-
