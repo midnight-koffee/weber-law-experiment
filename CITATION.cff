@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it."
+title: "Establishing Weber's Law for Time Perception using Auditory Interval Discrimination"
+authors:
+  - family-names: "Kumar"
+    given-names: "Divyanshu"
+    affiliation: "Indian Institute of Science"
+version: "v1.0"
+date-released: "2025-10-17"
+doi: "REPLACE_WITH_DOI"
+license: "CC-BY-4.0"
